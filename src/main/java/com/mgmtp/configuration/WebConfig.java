@@ -1,5 +1,6 @@
 package com.mgmtp.configuration;
 
+import org.apache.commons.dbcp.BasicDataSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -8,6 +9,8 @@ import org.springframework.web.servlet.config.annotation.DefaultServletHandlerCo
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
+
+import javax.sql.DataSource;
 
 /**
  * Created by Tan Dat on 06/12/2016.
@@ -31,5 +34,13 @@ public class WebConfig extends WebMvcConfigurerAdapter{
         configurer.enable();
     }
 
-
+    @Bean
+    public DataSource getDataSource() {
+        BasicDataSource ds = new BasicDataSource();
+        ds.setDriverClassName("org.postgresql.Driver");
+        ds.setUrl("jdbc:postgresql://localhost:5432/simplewebappdb");
+        ds.setUsername("postgres");
+        ds.setPassword("");
+        return ds;
+    }
 }
