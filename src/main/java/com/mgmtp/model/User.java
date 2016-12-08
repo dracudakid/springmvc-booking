@@ -1,6 +1,10 @@
 package com.mgmtp.model;
 
+import org.hibernate.validator.constraints.NotBlank;
+
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Past;
+import javax.validation.constraints.Size;
 import java.util.Date;
 
 /**
@@ -10,10 +14,14 @@ public class User {
      @NotNull
      private int id;
      @NotNull
+     @Size(min = 6, max = 255)
      private String username;
      @NotNull
+     @Size(min = 6, max = 255)
      private String password;
+     @NotBlank
      private String fullname;
+     @Past
      private Date dob;
      private String email;
 
