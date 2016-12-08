@@ -19,6 +19,8 @@
         <hibernate.version>5.2.4.Final</hibernate.version>
         <validation-api.version>1.1.0.Final</validation-api.version>
         <postgresql.version>9.1-901.jdbc4</postgresql.version>
+        <junit.version>4.12</junit.version>
+        <mockito.version>2.2.28</mockito.version>
     </properties>
 
     <dependencies>
@@ -93,12 +95,19 @@
             <version>${hibernate.version}</version>
         </dependency>
 
+        <!--Test-->
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>4.12</version>
+            <version>${junit.version}</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
+            <version>${mockito.version}</version>
+        </dependency>
+
 
         <dependency>
             <groupId>postgresql</groupId>
@@ -111,6 +120,20 @@
             <artifactId>liquibase-core</artifactId>
             <version>3.5.3</version>
         </dependency>
+
+        <!--Hibernate-->
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-entitymanager</artifactId>
+            <version>${hibernate.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-core</artifactId>
+            <version>${hibernate.version}</version>
+        </dependency>
+
+
     </dependencies>
     <build>
         <finalName>simplewebapp</finalName>

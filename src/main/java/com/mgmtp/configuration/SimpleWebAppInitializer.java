@@ -20,6 +20,8 @@ public class SimpleWebAppInitializer extends AbstractAnnotationConfigDispatcherS
     protected String[] getServletMappings() {
         return new String[] { "/" };
     }
+
+
 //    @Override
 //    public void onStartup(ServletContext servletContext) throws ServletException {
 //        AnnotationConfigWebApplicationContext context = new AnnotationConfigWebApplicationContext();
