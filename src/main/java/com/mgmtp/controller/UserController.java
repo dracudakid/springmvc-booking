@@ -5,9 +5,11 @@ import com.mgmtp.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import javax.validation.Valid;
 import java.util.List;
 
 /**
@@ -29,5 +31,20 @@ public class UserController {
         System.out.println(userList.toString());
         model.addAttribute("userList", userList);
         return "users";
+    }
+
+    @RequestMapping(value = "/register", method = RequestMethod.GET)
+    public String showRegisterForm(){
+        return "registerForm";
+    }
+
+    @RequestMapping(value = "/register", method = RequestMethod.POST)
+    public String processRegistration(@Valid User user, Errors errors){
+        if(errors.hasErrors()){
+            System.out.println(errors.toString());
+            return "registerForm";
+        }
+        userRepository.save(user);
+        return "redirect:/users";
     }
 }

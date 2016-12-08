@@ -1,13 +1,17 @@
 package com.mgmtp.model;
 
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 /**
  * Created by Tan Dat on 07/12/2016.
  */
 public class User {
+     @NotNull
      private int id;
+     @NotNull
      private String username;
+     @NotNull
      private String password;
      private String fullname;
      private Date dob;

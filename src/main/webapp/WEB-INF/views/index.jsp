@@ -9,15 +9,14 @@
 <%@ page session="false" %>
 <html>
 <head>
-    <title>Spittr</title>
+    <title>SimpleWebApp</title>
     <link rel="stylesheet"
           type="text/css"
           href="<c:url value="/resources/style.css" />" >
 </head>
 <body>
 <h1>Welcome to SimpleWebApp</h1>
-<div class="cirle">This is styled circle div</div>
-<a href="<c:url value="/spittles" />">Spittles</a> |
-<a href="<c:url value="/spitter/register" />">Register</a>
+<a href="<c:url value="/users" />">Spittles</a> |
+<a href="<c:url value="/users/register" />">Register</a>
 </body>
 </html>

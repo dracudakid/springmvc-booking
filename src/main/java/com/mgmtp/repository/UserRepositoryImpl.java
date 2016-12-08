@@ -5,10 +5,7 @@ import org.springframework.stereotype.Repository;
 
 import javax.inject.Inject;
 import javax.sql.DataSource;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -57,5 +54,35 @@ public class UserRepositoryImpl implements UserRepository{
             }
         }
         return userList;
+    }
+
+    @Override
+    public void save(User user) {
+        String sql = " INSERT INTO tbl_user(username, password, fullname, dob, email) values(?,?,?,?,?);";
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        try {
+            conn = dataSource.getConnection();
+            stmt = conn.prepareStatement(sql);
+            stmt.setString(1, user.getUsername());
+            stmt.setString(2, user.getPassword());
+            stmt.setString(3,user.getFullname());
+            stmt.setDate(4, new Date(user.getDob().getTime()));
+            stmt.setString(5, user.getEmail());
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try{
+                if (stmt != null){
+                    stmt.close();
+                }
+                if( conn != null){
+                    conn.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }

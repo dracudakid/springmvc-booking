@@ -5,8 +5,29 @@
     <title>Users</title>
 </head>
 <body>
-    <c:forEach items="${userList}" var="user" >
-        <li>Username: ${user.username}</li>
-    </c:forEach>
+    <table>
+        <thead>
+        <tr>
+            <th>Id</th>
+            <th>Username</th>
+            <th>Password</th>
+            <th>Full name</th>
+            <th>Date of birth</th>
+            <th>Email</th>
+        </tr>
+        </thead>
+        <tbody>
+        <c:forEach items="${userList}" var="user">
+            <tr>
+                <td>${user.id}</td>
+                <td>${user.username}</td>
+                <td>${user.password}</td>
+                <td>${user.fullname}</td>
+                <td>${user.dob}</td>
+                <td>${user.email}</td>
+            </tr>
+        </c:forEach>
+        </tbody>
+    </table>
 </body>
 </html>
