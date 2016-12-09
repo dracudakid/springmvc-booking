@@ -21,6 +21,4 @@ public class UserControllerTest{
         MockMvc mockMvc = standaloneSetup(controller).setSingleView(new InternalResourceView("/WEB-INF/views/users.jsp")).build();
         mockMvc.perform(get("/users")).andExpect(view().name("users"));
     }
-
-
 }
