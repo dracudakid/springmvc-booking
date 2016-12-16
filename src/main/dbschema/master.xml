@@ -5,6 +5,21 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
 
-    <include file="src/main/dbschema/R1.0/create_tbl_user.sql" />
+    <include file="src/main/dbschema/R1.0/create_time_off_request.xml" />
+    <include file="src/main/dbschema/R1.0/insert_data_time_off_request.sql" />
+    <include file="src/main/dbschema/R2.0/create_employee.xml" />
+    <include file="src/main/dbschema/R2.0/create_role.xml" />
+    <include file="src/main/dbschema/R2.0/create_employee_role.xml" />
+    <include file="src/main/dbschema/R2.0/create_vacation_type.xml" />
+    <include file="src/main/dbschema/R2.0/create_yearly_quota.xml" />
+    <include file="src/main/dbschema/R2.0/create_request.xml" />
+    <include file="src/main/dbschema/R2.0/create_request_status.xml" />
+    <include file="src/main/dbschema/R2.0/insert_data_for_employee.xml" />
+    <include file="src/main/dbschema/R2.0/insert_data_for_role.xml" />
+    <include file="src/main/dbschema/R2.0/insert_data_for_employee_role.xml" />
+    <include file="src/main/dbschema/R2.0/insert_data_for_vacation_type.xml" />
+    <include file="src/main/dbschema/R2.0/insert_data_for_yearly_quota.xml" />
+    <include file="src/main/dbschema/R2.0/insert_data_for_request.xml" />
+    <include file="src/main/dbschema/R2.0/insert_data_for_request_status.xml" />
 
 </databaseChangeLog>
