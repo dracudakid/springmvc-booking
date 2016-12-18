@@ -3,6 +3,7 @@ package com.mgmtp.model;
 import javax.persistence.*;
 import java.sql.Date;
 import java.sql.Timestamp;
+import java.util.List;
 
 /**
  * Created by Tan Dat on 18/12/2016.
@@ -16,6 +17,7 @@ public class Request {
     private String comment;
     private VacationType vacationType;
     private Employee employee;
+    private List<RequestStatus> requestStatuses;
 
     @Id
     @Column(name = "id")
@@ -67,6 +69,21 @@ public class Request {
         this.comment = comment;
     }
 
+    @Transient
+    public String getStatus(){
+        return
+                this.requestStatuses.stream().anyMatch(rs -> rs.getApproved() == null)
+                        ? "Pending"
+                        : this.requestStatuses.stream().allMatch(rs -> rs.getApproved())
+                            ? "Approved" : "Rejected";
+    };
+    @Transient
+    public int getDays(){
+        int diffInDays = (int)( (toDate.getTime() - fromDate.getTime())
+                / (1000 * 60 * 60 * 24) );
+        return diffInDays;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -111,5 +128,14 @@ public class Request {
 
     public void setEmployee(Employee employee) {
         this.employee = employee;
+    }
+
+    @OneToMany(mappedBy = "id.request", fetch = FetchType.EAGER)
+    public List<RequestStatus> getRequestStatuses() {
+        return requestStatuses;
+    }
+
+    public void setRequestStatuses(List<RequestStatus> requestStatuses) {
+        this.requestStatuses = requestStatuses;
     }
 }

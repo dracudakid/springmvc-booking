@@ -16,6 +16,9 @@ public class Employee {
     private String password;
     private Date startWorkingDate;
     private List<Request> requests;
+    private Employee leader;
+    private List<Employee> employees;
+    private List<RequestStatus> requestStatuses;
 
     @Id
     @Column(name = "id")
@@ -45,6 +48,11 @@ public class Employee {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    @Transient
+    public String getFullName() {
+        return this.firstName + " " + this.lastName;
     }
 
     @Basic
@@ -113,5 +121,33 @@ public class Employee {
 
     public void setRequests(List<Request> requests) {
         this.requests = requests;
+    }
+
+    @ManyToOne
+    @JoinColumn(name = "leader_id")
+    public Employee getLeader() {
+        return leader;
+    }
+
+    public void setLeader(Employee leader) {
+        this.leader = leader;
+    }
+
+    @OneToMany(mappedBy = "leader")
+    public List<Employee> getEmployees() {
+        return employees;
+    }
+
+    public void setEmployees(List<Employee> employees) {
+        this.employees = employees;
+    }
+
+    @OneToMany(mappedBy = "id.leader")
+    public List<RequestStatus> getRequestStatuses() {
+        return requestStatuses;
+    }
+
+    public void setRequestStatuses(List<RequestStatus> requestStatuses) {
+        this.requestStatuses = requestStatuses;
     }
 }

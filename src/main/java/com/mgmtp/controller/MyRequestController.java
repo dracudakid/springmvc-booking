@@ -1,6 +1,7 @@
 package com.mgmtp.controller;
 
 import com.mgmtp.model.Request;
+import com.mgmtp.service.EmployeeService;
 import com.mgmtp.service.RequestService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -16,9 +17,13 @@ public class MyRequestController {
     @Autowired
     RequestService requestService;
 
+    @Autowired
+    EmployeeService employeeService;
+
     @RequestMapping(value = "/history", method = RequestMethod.GET)
     public String history(Model model){
         List<Request> requests = requestService.findMyRequestHistory();
+        System.out.println(requests.toString());
         model.addAttribute("requests", requests);
         return "myrequest/history";
     }
