@@ -27,7 +27,7 @@ import java.util.Properties;
 @Configuration
 @EnableJpaRepositories(basePackageClasses = Application.class)
 @EnableTransactionManagement
-@PropertySource("classpath:ds-hibernate-pgsql.properties")
+@PropertySource("classpath:ds-hibernate-pgsql.${spring.profiles.active}.properties")
 public class PersistentJPAConfig {
     @Value("${dataSource.driverClassName}")
     private String driver;
