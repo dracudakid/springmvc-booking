@@ -5,7 +5,7 @@
             Log in to your account
         </div>
         <div class="content">
-            <form class="ui form">
+            <form class="ui form" th:action="@{/login}" method="post">
                 <div class="ui segment">
                     <div class="field">
                         <label>Email</label>
@@ -23,7 +23,7 @@
                     </div>
                 </div>
                 <div class="ui error message"></div>
-                <div class="ui teal submit button"><i class="checkmark icon"></i>Login</div>
+                <button class="ui teal submit button"><i class="checkmark icon"></i>Login</button>
                 <div class="ui cancel button">Cancel</div>
             </form>
             <div class="ui message">
