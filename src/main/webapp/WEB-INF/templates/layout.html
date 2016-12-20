@@ -159,7 +159,7 @@
                     <a class="ui inverted button" id="signup-button">Sign Up</a>
                 </div>
                 <div class="right item" sec:authorize="isAuthenticated()">
-                    <a class="ui inverted button">Hello</a>
+                    <a class="ui inverted button"><span sec:authentication="name">User</span></a>
                     <a class="ui inverted button" id="logout-button" onclick="document.getElementById('logoutForm').submit();">Log out</a>
                     <form id="logoutForm" th:action="@{/logout}" method="post">
                     </form>
