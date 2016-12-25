@@ -6,9 +6,6 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 
-/**
- * Created by Tan Dat on 19/12/2016.
- */
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
@@ -30,8 +27,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .anyRequest().hasRole(ROLE_USER)
                 .and()
                 .formLogin()
-                .loginPage("/login").failureUrl("/?login&error")
+                .loginPage("/").failureUrl("/?login&error")
                 .usernameParameter("email").passwordParameter("password")
-                .and().logout().logoutSuccessUrl("/");
+                .and().logout().logoutSuccessUrl("/")
+                .and().csrf().disable();
     }
 }

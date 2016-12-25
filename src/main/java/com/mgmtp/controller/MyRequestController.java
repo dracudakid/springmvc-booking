@@ -1,7 +1,7 @@
 package com.mgmtp.controller;
 
 import com.mgmtp.model.Request;
-import com.mgmtp.service.EmployeeService;
+import com.mgmtp.repository.VacationTypeRepository;
 import com.mgmtp.service.RequestService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -14,30 +14,55 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 @RequestMapping("/my-request")
 public class MyRequestController {
-    @Autowired
-    RequestService requestService;
+    private static final int MAX_PAGES_IN_PAGINATION = 9;
 
     @Autowired
-    EmployeeService employeeService;
+    private RequestService requestService;
+
+    @Autowired
+    private VacationTypeRepository vacationTypeRepository;
+
 
     @RequestMapping(value = "/history", method = RequestMethod.GET)
-    public String history(@RequestParam(value = "page", required = false) Integer pageNumber,
-                          @RequestParam(value = "limit", required = false) Integer limit,
+    public String history(@RequestParam(value = "page", defaultValue = "1", required = false) Integer pageNumber,
+                          @RequestParam(value = "limit", defaultValue = "10", required = false) Integer limit,
                           Model model){
+        if (pageNumber < 1) return "redirect:/my-request/history";
 
-//        List<Request> requests = requestService.findMyRequestHistory();
-        if(pageNumber == null) pageNumber = 1;
-        if(limit == null) limit = 1;
         Page<Request> requests = requestService.findALl(pageNumber, limit);
-        int currentIndex = requests.getNumber() + 1;
-        int beginIndex = Math.max(1, currentIndex - 3);
-        int endIndex = Math.min(beginIndex + 6, requests.getTotalPages());
-
         model.addAttribute("requests", requests);
+        setPaginationInfo(model, requests);
+
+        return "myrequest/history";
+    }
+
+    @RequestMapping(value = "/booking", method = RequestMethod.GET)
+    public String booking(Model model){
+        model.addAttribute("request", new Request());
+        model.addAttribute("vacationTypes", vacationTypeRepository.findAll());
+        return "myrequest/booking";
+    }
+
+    @RequestMapping(value = "/booking", method = RequestMethod.POST)
+    public String processBookingForm(Request request){
+
+        requestService.save(request);
+        return "redirect:/my-request/booking";
+    }
+
+    private void setPaginationInfo(Model model, Page page){
+        int currentIndex = page.getNumber() + 1;
+        int beginIndex = 1, endIndex = page.getTotalPages();
+        if(page.getTotalPages() > MAX_PAGES_IN_PAGINATION){
+            beginIndex = Math.max(1, currentIndex - MAX_PAGES_IN_PAGINATION/2);
+            endIndex = Math.min(beginIndex + MAX_PAGES_IN_PAGINATION - 1, page.getTotalPages());
+            if(endIndex - beginIndex + 1 < MAX_PAGES_IN_PAGINATION){
+                beginIndex -= MAX_PAGES_IN_PAGINATION - (endIndex-beginIndex + 1);
+            }
+        }
+
         model.addAttribute("beginIndex", beginIndex);
         model.addAttribute("endIndex", endIndex);
         model.addAttribute("currentIndex", currentIndex);
-
-        return "myrequest/history";
     }
 }

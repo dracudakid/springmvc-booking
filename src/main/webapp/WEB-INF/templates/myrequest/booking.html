@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<!-- saved from url=(0045)http://semantic-ui.com/examples/homepage.html -->
+<html class="gr__semantic-ui_com" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:replace="layout::site-head"/>
+    <link rel="stylesheet" href="../../../resources/bower_components/semantic-ui-calendar/dist/calendar.min.css" th:href="@{/bower_components/semantic-ui-calendar/dist/calendar.min.css}"/>
+</head>
+<body data-gr-c-s-loaded="true" class="pushable">
+<th:block th:replace="layout::site-menu"/>
+<!-- Page Contents -->
+<div class="pusher masthead">
+    <header th:replace="layout::site-header"></header>
+    <main class="ui stackable grid container">
+        <div class="ten wide column">
+            <div class="ui segment">
+                <div class="ui header">Book Time Off</div>
+                <form class="ui form" method="post" th:object="${request}">
+                        <div class="field">
+                            <label for="fromDateInput">From</label>
+                            <div class="ui left icon input" id="fromDateInput">
+                                <input type="text" th:field="*{fromDate}" placeholder="From date...">
+                                <i class="calendar icon"></i>
+                            </div>
+                        </div>
+
+                        <div class="field">
+                            <label for="toDateInput">To</label>
+                            <div class="ui left icon input" id="toDateInput">
+                                <input type="text" th:field="*{toDate}" placeholder="To date...">
+                                <i class="calendar icon"></i>
+                            </div>
+                        </div>
+
+                        <div class="field">
+                            <label for="vacationType">Type</label>
+                            <select id="vacationType" class="ui dropdown" th:field="*{vacationType.id}">
+                                <!--<option value="">Vacation Type</option>-->
+                                <option th:each="vacationType : ${vacationTypes}"
+                                        th:value="${vacationType.id}"
+                                        th:text="${vacationType.name}">
+                                </option>
+                            </select>
+                        </div>
+
+                        <div class="field">
+                            <label for="comment">Comment</label>
+                            <textarea class="ui textarea" rows="3" id="comment" th:field="*{comment}"></textarea>
+                        </div>
+
+                        <button class="ui primary button">Submit</button>
+                    <div>* Your vacation request will be approved by ... and ...</div>
+                </form>
+            </div>
+        </div>
+        <div class="six wide column">
+            <div class="ui segment">
+                <table class="ui table">
+                    <thead>
+                    <tr>
+                        <th>Time-off</th>
+                        <th>Total</th>
+                        <th>Remaining</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>Vacation</td>
+                        <td>15</td>
+                        <td>6</td>
+                    </tr>
+                    <tr>
+                        <td>Sick</td>
+                        <td>4</td>
+                        <td>1</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+    <footer th:replace="layout::site-footer"></footer>
+</div>
+<th:block th:replace="layout::site-script"/>
+<script type="text/javascript" src="../../../resources/bower_components/semantic-ui-calendar/dist/calendar.min.js" th:src="@{/bower_components/semantic-ui-calendar/dist/calendar.min.js}"></script>
+<script>
+    $('#fromDateInput').calendar({
+        type: 'date',
+        endCalendar: $('#toDateInput')
+    });
+    $('#toDateInput').calendar({
+        type: 'date',
+        startCalendar: $('#fromDateInput')
+    });
+
+</script>
+</body>
+</html>
+

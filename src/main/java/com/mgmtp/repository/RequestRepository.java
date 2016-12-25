@@ -7,10 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
-/**
- * Created by Tan Dat on 16/12/2016.
- */
-public interface RequestRepository  extends JpaRepository<Request, Long> {
+public interface RequestRepository  extends JpaRepository<Request, Integer> {
     @Override
     List<Request> findAll();
     List<Request> findByEmployeeId(int employeeId);

@@ -1,3 +1,7 @@
 main {
     min-height: 500px;
 }
+
+.ui.popup.calendar{
+    padding: 0;
+}

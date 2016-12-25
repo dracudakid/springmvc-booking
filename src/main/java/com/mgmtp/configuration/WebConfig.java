@@ -7,9 +7,6 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
-/**
- * Created by Tan Dat on 06/12/2016.
- */
 
 @Configuration
 @EnableWebMvc
@@ -23,6 +20,7 @@ public class WebConfig extends WebMvcConfigurerAdapter{
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/public/**").addResourceLocations("/resources/public/");
+        registry.addResourceHandler("/bower_components/**").addResourceLocations("/resources/bower_components/");
     }
 
 }
