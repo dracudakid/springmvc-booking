@@ -1,0 +1,20 @@
+{
+  "name": "simplewebapp",
+  "homepage": "https://github.com/dracudakid/springmvc-jenkins-mock",
+  "authors": [
+    "Tan Dat <tandat2209@gmail.com>"
+  ],
+  "description": "",
+  "main": "",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "semantic-ui-calendar": "^0.0.4"
+  }
+}

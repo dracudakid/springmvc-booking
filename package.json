@@ -1,0 +1,22 @@
+{
+  "name": "simplewebapp",
+  "version": "1.0.0",
+  "description": "* Config your datasource in src/dbschema/liquibase.properties",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dracudakid/springmvc-jenkins-mock.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dracudakid/springmvc-jenkins-mock/issues"
+  },
+  "homepage": "https://github.com/dracudakid/springmvc-jenkins-mock#readme",
+  "dependencies": {
+    "bower": "^1.8.0"
+  }
+}
