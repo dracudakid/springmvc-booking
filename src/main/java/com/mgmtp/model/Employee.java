@@ -38,6 +38,9 @@ public class Employee {
     @OneToMany(mappedBy = "id.leader")
     private List<RequestStatus> requestStatuses;
 
+    @OneToMany(mappedBy = "employee")
+    private List<EmployeeRole> employeeRoles;
+
     @Transient
     public String getFullName() {
         return this.firstName + " " + this.lastName;

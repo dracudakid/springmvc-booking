@@ -19,13 +19,13 @@ public class Request {
     @Basic
     @Column(name = "from_date")
     @DateTimeFormat(pattern = "MMM d, yyyy")
-    private java.util.Date fromDate;
+    private Date fromDate;
 
     @Temporal(TemporalType.DATE)
     @Basic
     @Column(name = "to_date")
     @DateTimeFormat(pattern = "MMM d, yyyy")
-    private java.util.Date toDate;
+    private Date toDate;
 
     @Temporal(TemporalType.TIMESTAMP)
     @Basic
