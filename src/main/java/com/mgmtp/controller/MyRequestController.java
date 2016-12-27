@@ -50,7 +50,7 @@ public class MyRequestController {
         return "redirect:/my-request/booking";
     }
 
-    private void setPaginationInfo(Model model, Page page){
+    public static void setPaginationInfo(Model model, Page page){
         int currentIndex = page.getNumber() + 1;
         int beginIndex = 1, endIndex = page.getTotalPages();
         if(page.getTotalPages() > MAX_PAGES_IN_PAGINATION){

@@ -1,9 +1,10 @@
 package com.mgmtp.model;
 
 import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
-import java.sql.Date;
+import java.util.Date;
 import java.util.List;
 
 @Data
@@ -24,7 +25,10 @@ public class Employee {
     @Basic
     @Column(name = "password")
     private String password;
+
+    @Temporal(TemporalType.DATE)
     @Basic
+    @DateTimeFormat(pattern = "MMM d, yyyy")
     @Column(name = "start_working_date")
     private Date startWorkingDate;
     @OneToMany(mappedBy = "employee")
