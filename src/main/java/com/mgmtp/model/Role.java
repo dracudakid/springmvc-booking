@@ -1,11 +1,13 @@
 package com.mgmtp.model;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import javax.persistence.*;
-import java.util.List;
+import java.util.Set;
 
 @Data
+@EqualsAndHashCode(exclude = {"employees"})
 @Entity
 public class Role {
     @Id
@@ -20,6 +22,6 @@ public class Role {
     @Column(name = "description")
     private String description;
 
-    @OneToMany(mappedBy = "role")
-    private List<EmployeeRole> employeeRoles;
+    @ManyToMany(mappedBy = "roles")
+    private Set<Employee> employees;
 }

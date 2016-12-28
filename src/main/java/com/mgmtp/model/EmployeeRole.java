@@ -4,6 +4,7 @@ import lombok.Data;
 
 import javax.persistence.*;
 
+@Deprecated
 @Data
 @Entity
 @Table(name = "employee_role")
