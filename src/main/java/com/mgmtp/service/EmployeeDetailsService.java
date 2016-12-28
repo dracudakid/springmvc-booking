@@ -16,11 +16,18 @@ import org.springframework.stereotype.Service;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * This service is used for spring-security authentication using database
+ */
 @Service
 public class EmployeeDetailsService implements UserDetailsService{
     private static final Logger LOGGER = LoggerFactory.getLogger(EmployeeDetailsService.class);
+    private final EmployeeRepository employeeRepository;
+
     @Autowired
-    private EmployeeRepository employeeRepository;
+    public EmployeeDetailsService(EmployeeRepository employeeRepository) {
+        this.employeeRepository = employeeRepository;
+    }
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {

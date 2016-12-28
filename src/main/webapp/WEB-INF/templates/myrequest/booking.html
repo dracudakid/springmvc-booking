@@ -48,7 +48,7 @@
                         </div>
 
                         <button class="ui primary button">Submit</button>
-                    <div>* Your vacation request will be approved by ... and ...</div>
+                    <div>* Your vacation request will be approved by <span th:text="${approvers[0].getFullName()}">...</span> and <span th:text="${approvers[1].getFullName()}">...</span> </div>
                 </form>
             </div>
         </div>
@@ -83,7 +83,7 @@
 <th:block th:replace="layout::site-script"/>
 <script type="text/javascript" src="../../../resources/bower_components/semantic-ui-calendar/dist/calendar.min.js" th:src="@{/bower_components/semantic-ui-calendar/dist/calendar.min.js}"></script>
 <script>
-    $('#fromDateInput').calendar({
+    $("#fromDateInput").calendar({
         type: 'date',
         endCalendar: $('#toDateInput')
     });

@@ -47,6 +47,12 @@ public class Employee {
             inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
     private Set<Role> roles;
 
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinTable(name = "employee_approver",
+            joinColumns = @JoinColumn(name = "employee_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "approver_id", referencedColumnName = "id"))
+    private Set<Employee> approvers;
+
     @Transient
     public String getFullName() {
         return this.firstName + " " + this.lastName;

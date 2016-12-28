@@ -1,10 +1,16 @@
 package com.mgmtp.controller;
 
+import com.mgmtp.model.Employee;
 import com.mgmtp.model.Request;
 import com.mgmtp.repository.VacationTypeRepository;
+import com.mgmtp.service.EmployeeService;
 import com.mgmtp.service.RequestService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,13 +20,21 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 @RequestMapping("/my-request")
 public class MyRequestController {
+    private final static Logger LOGGER = LoggerFactory.getLogger(MyRequestController.class);
     private static final int MAX_PAGES_IN_PAGINATION = 9;
 
-    @Autowired
-    private RequestService requestService;
+    private final RequestService requestService;
+
+    private final EmployeeService employeeService;
+
+    private final VacationTypeRepository vacationTypeRepository;
 
     @Autowired
-    private VacationTypeRepository vacationTypeRepository;
+    public MyRequestController(RequestService requestService, EmployeeService employeeService, VacationTypeRepository vacationTypeRepository) {
+        this.requestService = requestService;
+        this.employeeService = employeeService;
+        this.vacationTypeRepository = vacationTypeRepository;
+    }
 
 
     @RequestMapping(value = "/history", method = RequestMethod.GET)
@@ -38,6 +52,11 @@ public class MyRequestController {
 
     @RequestMapping(value = "/booking", method = RequestMethod.GET)
     public String booking(Model model){
+        UserDetails userDetails =
+                (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String email = userDetails.getUsername();
+        Employee currentEmployee = employeeService.findByEmail(email);
+        model.addAttribute("approvers", currentEmployee.getApprovers());
         model.addAttribute("request", new Request());
         model.addAttribute("vacationTypes", vacationTypeRepository.findAll());
         return "myrequest/booking";
