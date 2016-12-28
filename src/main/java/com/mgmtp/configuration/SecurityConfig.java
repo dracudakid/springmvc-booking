@@ -19,9 +19,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         auth.userDetailsService(employeeDetailsService);
     }
 
-
-
-
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         String ROLE_ADMIN = "ADMIN";

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<!-- saved from url=(0045)http://semantic-ui.com/examples/homepage.html -->
+<html class="gr__semantic-ui_com" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:replace="layout::site-head"></th:block>
+</head>
+<body data-gr-c-s-loaded="true" class="pushable">
+<th:block th:replace="layout::site-menu"></th:block>
+<div th:replace="auth/login::modal-login"></div>
+<!-- Page Contents -->
+<div class="pusher masthead">
+    <header th:replace="layout::site-header"></header>
+    <main class="ui grid container">
+        <div class="sixteen wide column">
+            <div class="column">
+                <h4 class="ui top attached header">Request History</h4>
+                <div class="ui bottom attached segment">
+                    <table class="ui celled table">
+                        <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Full Name</th>
+                            <th>From</th>
+                            <th>To</th>
+                            <th>Days</th>
+                            <th>Type</th>
+                            <th>Comment</th>
+                            <th>Status</th>
+                            <th>Approvers</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="requestStatus, start : ${requestStatuses}">
+                            <td th:text="${start.index + requestStatuses.size() * (currentIndex -1) + 1}"></td>
+                            <td th:text="${requestStatus.request.getEmployee().getFullName()}"></td>
+                            <td th:text="${#calendars.format(requestStatus.request.fromDate, 'yyyy-MM-dd')}"></td>
+                            <td th:text="${#calendars.format(requestStatus.request.toDate, 'yyyy-MM-dd')}"></td>
+                            <td th:text="${requestStatus.request.getDays()}"></td>
+                            <td th:text="${requestStatus.request.vacationType.name}"></td>
+                            <td th:text="${requestStatus.request.comment}"></td>
+                            <td>
+                                <div class="ui list">
+                                    <div class="item" th:each="requestStatus: ${requestStatus.request.requestStatuses}">
+                                        <i class="icon" th:classappend="${requestStatus.approved}  == true
+                                        ? 'checkmark green'
+                                        : (${requestStatus.approved} == false
+                                            ? 'remove red' : 'spinner icon')"></i>
+                                        <div class="content" th:text="${requestStatus.leader.getFullName()} ">Till Garner</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+
+                            </td>
+                        </tr>
+                        </tbody>
+                        <!--<tfoot>-->
+                        <!--<tr><th colspan="6">-->
+                            <!--<div class="ui right floated pagination menu" th:with="historyUrl='/my-request/history'">-->
+                                <!--<a class="icon item" th:if="${!requests.isFirst()}" th:href="@{${historyUrl}(page=(${currentIndex}-1))}">-->
+                                    <!--<i class="left chevron icon"></i>-->
+                                <!--</a>-->
+                                <!--<a class="item" th:each="i:${#numbers.sequence(beginIndex, endIndex)}"-->
+                                   <!--th:text="${i}" th:classappend="${currentIndex == i} ? 'active' : ''"-->
+                                   <!--th:href="@{${historyUrl}(page=${i})}">-->
+                                <!--</a>-->
+                                <!--<a class="icon item" th:if="${!requests.isLast()}" th:href="@{${historyUrl}(page=(${currentIndex}+1))}">-->
+                                    <!--<i class="right chevron icon"></i>-->
+                                <!--</a>-->
+                            <!--</div>-->
+                        <!--</th>-->
+                        <!--</tr></tfoot>-->
+                    </table>
+                </div>
+            </div>
+        </div>
+    </main>
+    <footer th:replace="layout::site-footer"></footer>
+</div>
+<th:block th:replace="layout::site-script"></th:block>
+</body>
+</html>
