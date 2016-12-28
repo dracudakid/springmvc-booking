@@ -6,6 +6,7 @@ import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import java.io.Serializable;
 
+@Deprecated
 @Data
 @Embeddable
 public class EmployeeRolePK implements Serializable {

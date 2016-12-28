@@ -37,9 +37,9 @@ public class Employee {
     private Employee leader;
 
     @OneToMany(mappedBy = "leader")
-    private List<Employee> employees;
-    @OneToMany(mappedBy = "id.leader")
-    private List<RequestStatus> requestStatuses;
+    private Set<Employee> employees;
+    @OneToMany(mappedBy = "leader")
+    private Set<RequestStatus> requestStatuses;
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(name = "employee_role",

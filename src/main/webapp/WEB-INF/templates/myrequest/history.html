@@ -40,7 +40,7 @@
                                         ? 'checkmark green'
                                         : (${requestStatus.approved} == false
                                             ? 'remove red' : '')"></i>
-                                        <div class="content" th:text="${requestStatus.id.leader.getFullName()} ">Till Garner</div>
+                                        <div class="content" th:text="${requestStatus.leader.getFullName()} ">Till Garner</div>
                                     </div>
                                 </div>
                             </td>
