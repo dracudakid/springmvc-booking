@@ -1,13 +1,15 @@
 package com.mgmtp.model;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.util.Date;
-import java.util.List;
+import java.util.Set;
 
 @Data
+@EqualsAndHashCode(exclude = {"employee", "requestStatuses"})
 @Entity
 public class Request {
     @Id
@@ -19,13 +21,13 @@ public class Request {
     @Basic
     @Column(name = "from_date")
     @DateTimeFormat(pattern = "MMM d, yyyy")
-    private java.util.Date fromDate;
+    private Date fromDate;
 
     @Temporal(TemporalType.DATE)
     @Basic
     @Column(name = "to_date")
     @DateTimeFormat(pattern = "MMM d, yyyy")
-    private java.util.Date toDate;
+    private Date toDate;
 
     @Temporal(TemporalType.TIMESTAMP)
     @Basic
@@ -44,8 +46,8 @@ public class Request {
     @JoinColumn(name = "employee_id")
     private Employee employee;
 
-    @OneToMany(mappedBy = "id.request", fetch = FetchType.EAGER)
-    private List<RequestStatus> requestStatuses;
+    @OneToMany(mappedBy = "request", fetch = FetchType.EAGER)
+    private Set<RequestStatus> requestStatuses;
 
 
     @Transient

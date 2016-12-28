@@ -27,4 +27,7 @@ public class VacationType {
 
     @OneToMany(mappedBy = "vacationType")
     private List<Request> requests;
+
+    @OneToMany(mappedBy = "vacationType")
+    private List<YearlyQuota> yearlyQuotas;
 }

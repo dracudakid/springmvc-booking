@@ -8,13 +8,15 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by Tan Dat on 18/12/2016.
- */
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
+    private final EmployeeRepository employeeRepository;
+
     @Autowired
-    EmployeeRepository employeeRepository;
+    public EmployeeServiceImpl(EmployeeRepository employeeRepository) {
+        this.employeeRepository = employeeRepository;
+    }
+
     @Override
     public List<Employee> findMyLeaders() {
         int employeeId = 3;
@@ -26,5 +28,10 @@ public class EmployeeServiceImpl implements EmployeeService {
             leader = leader.getLeader();
         }
         return leaders;
+    }
+
+    @Override
+    public Employee findByEmail(String email) {
+        return employeeRepository.findByEmail(email);
     }
 }

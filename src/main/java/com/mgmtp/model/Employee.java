@@ -1,12 +1,15 @@
 package com.mgmtp.model;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import javax.persistence.*;
 import java.sql.Date;
 import java.util.List;
+import java.util.Set;
 
 @Data
+@EqualsAndHashCode(exclude = {"requests", "leader", "employees", "requestStatuses", "roles"})
 @Entity
 public class Employee {
     @Id
@@ -34,9 +37,21 @@ public class Employee {
     private Employee leader;
 
     @OneToMany(mappedBy = "leader")
-    private List<Employee> employees;
-    @OneToMany(mappedBy = "id.leader")
-    private List<RequestStatus> requestStatuses;
+    private Set<Employee> employees;
+    @OneToMany(mappedBy = "leader")
+    private Set<RequestStatus> requestStatuses;
+
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinTable(name = "employee_role",
+            joinColumns = @JoinColumn(name = "employee_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
+    private Set<Role> roles;
+
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinTable(name = "employee_approver",
+            joinColumns = @JoinColumn(name = "employee_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "approver_id", referencedColumnName = "id"))
+    private Set<Employee> approvers;
 
     @Transient
     public String getFullName() {
