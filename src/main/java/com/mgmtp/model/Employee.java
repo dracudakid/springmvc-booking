@@ -14,7 +14,8 @@ import java.util.Set;
 @Entity
 public class Employee {
     @Id
-    @Column(name = "id")
+    @Column(name = "id", updatable = false, nullable = false)
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Integer id;
     @Basic
     @Column(name = "first_name")
@@ -34,15 +35,18 @@ public class Employee {
     @DateTimeFormat(pattern = "MMM d, yyyy")
     @Column(name = "start_working_date")
     private Date startWorkingDate;
-    @OneToMany(mappedBy = "employee")
+
+    @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Request> requests;
+
     @ManyToOne
     @JoinColumn(name = "leader_id")
     private Employee leader;
 
     @OneToMany(mappedBy = "leader")
     private Set<Employee> employees;
-    @OneToMany(mappedBy = "leader")
+
+    @OneToMany(mappedBy = "leader", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private Set<RequestStatus> requestStatuses;
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
@@ -51,7 +55,7 @@ public class Employee {
             inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
     private Set<Role> roles;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "employee_approver",
             joinColumns = @JoinColumn(name = "employee_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "approver_id", referencedColumnName = "id"))

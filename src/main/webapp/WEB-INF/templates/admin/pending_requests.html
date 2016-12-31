@@ -33,8 +33,8 @@
                         <tr th:each="requestStatus, start : ${requestStatuses}">
                             <td th:text="${start.index + requestStatuses.size() * (currentIndex -1) + 1}"></td>
                             <td th:text="${requestStatus.request.getEmployee().getFullName()}"></td>
-                            <td th:text="${#calendars.format(requestStatus.request.fromDate, 'yyyy-MM-dd')}"></td>
-                            <td th:text="${#calendars.format(requestStatus.request.toDate, 'yyyy-MM-dd')}"></td>
+                            <td th:text="${#calendars.format(requestStatus.request.fromDate, 'MMM d, yyyy')}"></td>
+                            <td th:text="${#calendars.format(requestStatus.request.toDate, 'MMM d, yyyy')}"></td>
                             <td th:text="${requestStatus.request.getDays()}"></td>
                             <td th:text="${requestStatus.request.vacationType.name}"></td>
                             <td th:text="${requestStatus.request.comment}"></td>

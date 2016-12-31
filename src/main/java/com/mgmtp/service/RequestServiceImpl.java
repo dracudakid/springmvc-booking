@@ -2,23 +2,29 @@ package com.mgmtp.service;
 
 import com.mgmtp.model.Employee;
 import com.mgmtp.model.Request;
-import com.mgmtp.repository.EmployeeRepository;
+import com.mgmtp.model.RequestStatus;
 import com.mgmtp.repository.RequestRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class RequestServiceImpl implements RequestService {
-    @Autowired
-    private RequestRepository requestRepository;
+    private final RequestRepository requestRepository;
+    private final EmployeeDetailsService employeeDetailsService;
 
     @Autowired
-    private EmployeeRepository employeeRepository;
+    public RequestServiceImpl(RequestRepository requestRepository, EmployeeDetailsService employeeDetailsService) {
+        this.requestRepository = requestRepository;
+        this.employeeDetailsService = employeeDetailsService;
+    }
 
     @Override
     public List<Request> findAll() {
@@ -39,11 +45,18 @@ public class RequestServiceImpl implements RequestService {
     }
 
     @Override
+    @Transactional
     public void save(Request request) {
-        int employeeId = 3;
-        Employee employee = employeeRepository.findOne(3);
+        Employee employee = employeeDetailsService.getCurrentEmployee();
         request.setEmployee(employee);
         request.setCreatedAt(new Date());
+        requestRepository.save(request);
+        Set<RequestStatus> requestStatuses = new HashSet<>();
+        for (Employee approver: employee.getApprovers()) {
+            RequestStatus requestStatus = new RequestStatus(request, approver);
+            requestStatuses.add(requestStatus);
+        }
+        request.setRequestStatuses(requestStatuses);
         requestRepository.save(request);
     }
 }

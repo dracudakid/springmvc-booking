@@ -13,7 +13,7 @@ import java.util.Set;
 @Entity
 public class Request {
     @Id
-    @Column(name = "id")
+    @Column(name = "id", updatable = false, nullable = false)
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Integer id;
 
@@ -46,7 +46,7 @@ public class Request {
     @JoinColumn(name = "employee_id")
     private Employee employee;
 
-    @OneToMany(mappedBy = "request", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "request", fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private Set<RequestStatus> requestStatuses;
 
 
