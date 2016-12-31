@@ -3,12 +3,14 @@ package com.mgmtp.model;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.persistence.*;
 
 @Data
 @NoArgsConstructor
 @EqualsAndHashCode(exclude = {"request", "leader"})
+@ToString(exclude = {"request", "leader"})
 @Entity
 @Table(name = "request_status")
 public class RequestStatus {

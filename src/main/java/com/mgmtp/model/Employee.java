@@ -2,6 +2,7 @@ package com.mgmtp.model;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.ToString;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
@@ -10,7 +11,8 @@ import java.util.List;
 import java.util.Set;
 
 @Data
-@EqualsAndHashCode(exclude = {"requests", "leader", "employees", "requestStatuses", "roles"})
+@EqualsAndHashCode(exclude = {"requests", "leader", "employees", "requestStatuses", "roles", "approvers"})
+@ToString(exclude = {"requests", "leader", "employees", "requestStatuses", "roles", "approvers"})
 @Entity
 public class Employee {
     @Id

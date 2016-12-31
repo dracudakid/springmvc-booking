@@ -45,7 +45,7 @@ public class RequestServiceImpl implements RequestService {
     }
 
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public void save(Request request) {
         Employee employee = employeeDetailsService.getCurrentEmployee();
         request.setEmployee(employee);

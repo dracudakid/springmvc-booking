@@ -85,3 +85,6 @@ main {
         font-size: 1.5em;
     }
 }
+.button.loading.hidden{
+    display: none;
+}

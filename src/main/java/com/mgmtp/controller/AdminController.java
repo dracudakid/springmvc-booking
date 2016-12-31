@@ -3,31 +3,31 @@ package com.mgmtp.controller;
 
 import com.mgmtp.model.Employee;
 import com.mgmtp.model.RequestStatus;
-import com.mgmtp.repository.EmployeeRepository;
 import com.mgmtp.repository.RequestStatusRepository;
+import com.mgmtp.service.EmployeeDetailsService;
+import com.mgmtp.service.RequestStatusService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequestMapping("/admin")
 public class AdminController {
 
-    private final EmployeeRepository employeeRepository;
-
     private final RequestStatusRepository requestStatusRepository;
+    private final EmployeeDetailsService employeeDetailsService;
+    private final RequestStatusService requestStatusService;
 
     @Autowired
-    public AdminController(EmployeeRepository employeeRepository, RequestStatusRepository requestStatusRepository) {
-        this.employeeRepository = employeeRepository;
+    public AdminController(RequestStatusRepository requestStatusRepository,
+                           EmployeeDetailsService employeeDetailsService,
+                           RequestStatusService requestStatusService) {
         this.requestStatusRepository = requestStatusRepository;
+        this.employeeDetailsService = employeeDetailsService;
+        this.requestStatusService = requestStatusService;
     }
 
     @RequestMapping(value = "/pending_requests", method = RequestMethod.GET)
@@ -36,10 +36,7 @@ public class AdminController {
                           Model model){
         if (pageNumber < 1) return "redirect:/admin/pending_requests";
 
-        UserDetails userDetails =
-                (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        String email = userDetails.getUsername();
-        Employee currentEmployee = employeeRepository.findByEmail(email);
+        Employee currentEmployee = employeeDetailsService.getCurrentEmployee();
         // TODO: implement pagination here
         Page<RequestStatus> requestStatusPage = requestStatusRepository.findByLeaderId(currentEmployee.getId(),new PageRequest(pageNumber-1, Integer.MAX_VALUE));
 
@@ -51,4 +48,9 @@ public class AdminController {
         return "admin/pending_requests";
     }
 
+    @ResponseBody
+    @RequestMapping(value = "/pending_requests/{id}", method = RequestMethod.POST)
+    public String processPendingRequest(@PathVariable(value = "id") int requestId, @RequestParam(value = "action", required = true) String action){
+        return requestStatusService.updateRequestStatus(requestId, action).toString();
+    }
 }

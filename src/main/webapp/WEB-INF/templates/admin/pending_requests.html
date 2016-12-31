@@ -2,10 +2,10 @@
 <!-- saved from url=(0045)http://semantic-ui.com/examples/homepage.html -->
 <html class="gr__semantic-ui_com" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <th:block th:replace="layout::site-head"></th:block>
+    <th:block th:replace="layout::site-head"/>
 </head>
 <body data-gr-c-s-loaded="true" class="pushable">
-<th:block th:replace="layout::site-menu"></th:block>
+<th:block th:replace="layout::site-menu"/>
 <div th:replace="auth/login::modal-login"></div>
 <!-- Page Contents -->
 <div class="pusher masthead">
@@ -26,11 +26,11 @@
                             <th>Type</th>
                             <th>Comment</th>
                             <th>Status</th>
-                            <th>Approvers</th>
+                            <th>Actions</th>
                         </tr>
                         </thead>
                         <tbody>
-                        <tr th:each="requestStatus, start : ${requestStatuses}">
+                        <tr th:each="requestStatus, start : ${requestStatuses}" th:attr="data-id=${requestStatus.request.id}">
                             <td th:text="${start.index + requestStatuses.size() * (currentIndex -1) + 1}"></td>
                             <td th:text="${requestStatus.request.getEmployee().getFullName()}"></td>
                             <td th:text="${#calendars.format(requestStatus.request.fromDate, 'MMM d, yyyy')}"></td>
@@ -40,17 +40,32 @@
                             <td th:text="${requestStatus.request.comment}"></td>
                             <td>
                                 <div class="ui list">
-                                    <div class="item" th:each="requestStatus: ${requestStatus.request.requestStatuses}">
+                                    <div class="item" th:each="requestStatus: ${requestStatus.request.requestStatuses}"
+                                        th:classappend="${requestStatus.leader.equals(currentUser) ? 'currentuser': ''}">
                                         <i class="icon" th:classappend="${requestStatus.approved}  == true
                                         ? 'checkmark green'
                                         : (${requestStatus.approved} == false
-                                            ? 'remove red' : 'spinner icon')"></i>
+                                            ? 'remove red' : 'spinner icon' )"></i>
                                         <div class="content" th:text="${requestStatus.leader.getFullName()} ">Till Garner</div>
                                     </div>
                                 </div>
                             </td>
-                            <td>
-
+                            <td class="center aligned">
+                                <th:block th:if="${requestStatus.approved == null}">
+                                    <button class="ui left attached icon button accept" data-tooltip="Accept request" data-inverted="">
+                                        <i class="checkmark green icon"></i>
+                                    </button>
+                                    <button class="ui right attached icon button reject" data-tooltip="Reject request" data-inverted="">
+                                        <i class="remove red icon"></i>
+                                    </button>
+                                    <button class="ui loading button hidden">Loading</button>
+                                </th:block>
+                                <button th:if="${requestStatus.approved == true}" class="ui positive icon button">
+                                    <i class="checkmark icon"></i> Accepted
+                                </button>
+                                <button th:if="${requestStatus.approved == false}" class="ui negative icon button">
+                                    <i class="remove icon"></i> Rejected
+                                </button>
                             </td>
                         </tr>
                         </tbody>
@@ -77,6 +92,33 @@
     </main>
     <footer th:replace="layout::site-footer"></footer>
 </div>
-<th:block th:replace="layout::site-script"></th:block>
+<th:block th:replace="layout::site-script"/>
+<script>
+    $(function () {
+        $(".accept").click(function () {
+            var $td = $(this).parent();
+            $td.find("button").hide();
+            var $loadingBtn = $(this).siblings(".loading.hidden").show();
+            var requestId = $td.parent().attr("data-id");
+            $.post("/admin/pending_requests/"+requestId, {action: "Accept"}, function(data){
+                console.log(data);
+                $loadingBtn.attr("class", "ui green icon button").html("<i class='checkmark icon'></i> Accepted");
+                $td.parent().find(".currentuser>i").attr("class", "green checkmark icon");
+            })
+        })
+        $(".reject").click(function () {
+            var $td = $(this).parent();
+            $td.find("button").hide();
+            var $loadingBtn = $(this).siblings(".loading.hidden").show();
+            var requestId = $td.parent().attr("data-id");
+            $.post("/admin/pending_requests/"+requestId, {action: "Reject"}, function(data) {
+                console.log(data);
+                $loadingBtn.attr("class", "ui red icon button").html("<i class='remove icon'></i> Rejected");
+                $td.parent().find(".currentuser>i").attr("class", "red remove icon");
+            });
+        })
+    })
+
+</script>
 </body>
 </html>
