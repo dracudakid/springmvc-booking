@@ -3,14 +3,11 @@ package com.mgmtp.controller;
 import com.mgmtp.model.Employee;
 import com.mgmtp.model.Request;
 import com.mgmtp.repository.VacationTypeRepository;
-import com.mgmtp.service.EmployeeService;
+import com.mgmtp.service.EmployeeDetailsService;
 import com.mgmtp.service.RequestService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,22 +17,21 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 @RequestMapping("/my-request")
 public class MyRequestController {
-    private final static Logger LOGGER = LoggerFactory.getLogger(MyRequestController.class);
+    private final static Logger LOGGER = Logger.getLogger(MyRequestController.class);
     private static final int MAX_PAGES_IN_PAGINATION = 9;
 
     private final RequestService requestService;
-
-    private final EmployeeService employeeService;
-
     private final VacationTypeRepository vacationTypeRepository;
+    private final EmployeeDetailsService employeeDetailsService;
 
     @Autowired
-    public MyRequestController(RequestService requestService, EmployeeService employeeService, VacationTypeRepository vacationTypeRepository) {
+    public MyRequestController(RequestService requestService,
+                               VacationTypeRepository vacationTypeRepository,
+                               EmployeeDetailsService employeeDetailsService) {
         this.requestService = requestService;
-        this.employeeService = employeeService;
         this.vacationTypeRepository = vacationTypeRepository;
+        this.employeeDetailsService = employeeDetailsService;
     }
-
 
     @RequestMapping(value = "/history", method = RequestMethod.GET)
     public String history(@RequestParam(value = "page", defaultValue = "1", required = false) Integer pageNumber,
@@ -52,10 +48,7 @@ public class MyRequestController {
 
     @RequestMapping(value = "/booking", method = RequestMethod.GET)
     public String booking(Model model){
-        UserDetails userDetails =
-                (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        String email = userDetails.getUsername();
-        Employee currentEmployee = employeeService.findByEmail(email);
+        Employee currentEmployee = employeeDetailsService.getCurrentEmployee();
         model.addAttribute("approvers", currentEmployee.getApprovers());
         model.addAttribute("request", new Request());
         model.addAttribute("vacationTypes", vacationTypeRepository.findAll());
@@ -64,12 +57,11 @@ public class MyRequestController {
 
     @RequestMapping(value = "/booking", method = RequestMethod.POST)
     public String processBookingForm(Request request){
-
         requestService.save(request);
         return "redirect:/my-request/booking";
     }
 
-    private void setPaginationInfo(Model model, Page page){
+    public static void setPaginationInfo(Model model, Page page){
         int currentIndex = page.getNumber() + 1;
         int beginIndex = 1, endIndex = page.getTotalPages();
         if(page.getTotalPages() > MAX_PAGES_IN_PAGINATION){

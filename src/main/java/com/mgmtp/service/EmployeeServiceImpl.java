@@ -4,6 +4,7 @@ import com.mgmtp.model.Employee;
 import com.mgmtp.repository.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,7 +32,10 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
+    @Transactional
     public Employee findByEmail(String email) {
-        return employeeRepository.findByEmail(email);
+        Employee employee = employeeRepository.findByEmail(email);
+        employee.getRoles().size();
+        return employee;
     }
 }
